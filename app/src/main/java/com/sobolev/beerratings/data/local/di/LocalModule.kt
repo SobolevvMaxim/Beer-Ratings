@@ -1,0 +1,29 @@
+package com.sobolev.beerratings.data.local.di
+
+import android.content.Context
+import androidx.room.Room
+import com.sobolev.beerratings.data.local.AppDatabase
+import com.sobolev.beerratings.data.local.BookmarksDao
+import dagger.Module
+import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.components.SingletonComponent
+import javax.inject.Singleton
+
+@Module
+@InstallIn(SingletonComponent::class)
+object LocalModule {
+
+    @Singleton
+    @Provides
+    fun provideAppDatabase(@ApplicationContext context: Context) =
+        Room.databaseBuilder(
+            context,
+            AppDatabase::class.java,
+            APP_DATABASE
+        ).build()
+
+    @Provides
+    fun provideBookmarksDao(appDatabase: AppDatabase): BookmarksDao = appDatabase.bookmarksDao()
+}
